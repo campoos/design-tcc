@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Analytica AI - Escola</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+
+<style>
+        :root {
+            --color-primary: #1a73e8; /* Google Blue */
+            --color-primary-light: #e8f0fe; /* Light Blue for hover/active states */
+            --color-secondary: #5f6368; /* Google Grey */
+            --color-background: #f8f9fa; /* Light grey background */
+            --color-card-background: #ffffff;
+            --color-border: #dadce0;
+            --color-dark-text: #202124;
+            --color-light-text: #70757a;
+            --color-success: #34a853; /* Google Green */
+            --color-warning: #fbbc04; /* Google Yellow */
+            --color-error: #ea4335; /* Google Red */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif; /* Roboto for body text */
+            color: var(--color-dark-text);
+            background-color: var(--color-background);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            min-height: 10vh;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 250px;
+            background-color: var(--color-card-background);
+            border-right: 1px solid var(--color-border);
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .sidebar-logo {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: var(--color-dark-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .sidebar-nav li a .material-icons {
+            margin-right: 16px;
+            color: var(--color-secondary);
+        }
+
+        .sidebar-nav li a:hover {
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .sidebar-nav li a.active {
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+            border-left: 4px solid var(--color-primary);
+            padding-left: 20px; /* Adjust padding due to border */
+        }
+
+        .sidebar-nav li a.active .material-icons {
+            color: var(--color-primary);
+        }
+
+
+        /* --- Main Content --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 32px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .header h1 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 32px;
+            font-weight: 500;
+            margin: 0;
+            color: var(--color-dark-text);
+        }
+
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+
+        .header .user-info .material-icons {
+            color: var(--color-secondary);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background-color: var(--color-card-background);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            padding: 24px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 20px;
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 16px;
+            color: var(--color-dark-text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card h2 .material-icons {
+            color: var(--color-primary);
+            font-size: 24px;
+        }
+
+        .metric-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--color-dark-text);
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: var(--color-light-text);
+        }
+
+        /* --- Filters --- */
+        .filters {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .filters label {
+            font-weight: 500;
+            color: var(--color-dark-text);
+            margin-right: 8px;
+        }
+
+        .filters select,
+        .filters input[type="date"] {
+            padding: 10px 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            color: var(--color-dark-text);
+            background-color: var(--color-card-background);
+            transition: border-color 0.2s ease;
+            -webkit-appearance: none; 
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%235f6368'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 24px;
+        }
+
+        .filters select:focus,
+        .filters input[type="date"]:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 1px var(--color-primary);
+        }
+
+        /* --- Table Style --- */
+        .data-table {
+            background-color: var(--color-card-background);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            overflow-x: auto; 
+            padding: 16px;
+        }
+
+        .data-table h2 {
+            padding: 0 8px;
+        }
+
+        .data-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table th,
+        .data-table td {
+            text-align: left;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .data-table th {
+            background-color: var(--color-light-grey);
+            font-weight: 500;
+            color: var(--color-secondary);
+            text-transform: uppercase;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: var(--color-primary-light);
+        }
+
+        .data-table .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-success { background-color: #e6f4ea; color: var(--color-success); }
+        .status-warning { background-color: #fff7e6; color: var(--color-warning); }
+        .status-error { background-color: #fce8e6; color: var(--color-error); }
+        .status-info { background-color: #e8f0fe; color: var(--color-primary); }
+        
+        /* --- Chart Style --- */
+        canvas {
+            width: 100%;
+            max-height: 350px;
+        }
+
+        .main-section {
+            display: none;
+        }
+        .main-section.active {
+            display: block;
+        }
+        
+        .section-title-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .section-title-container .material-icons {
+            margin-right: 8px;
+            color: var(--color-primary);
+        }
+        
+        .section-title-container h2 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 24px;
+            font-weight: 500;
+            margin: 0;
+            color: var(--color-dark-text);
+        }
+
+        .card-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .report-card, .settings-card {
+            background-color: var(--color-card-background);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 24px;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .report-card h3, .settings-card h3 {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 18px;
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+
+        .report-card p {
+            font-size: 14px;
+            color: var(--color-light-text);
+            margin-bottom: 24px;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-primary);
+            background-color: var(--color-primary-light);
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d1e2ff;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--color-dark-text);
+        }
+        
+        .form-group .input-container {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            padding: 8px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background-color: var(--color-background);
+        }
+
+        .form-group .input-container .material-icons {
+            color: var(--color-secondary);
+            margin-right: 8px;
+        }
+
+        .form-group .input-container:focus-within {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 1px var(--color-primary);
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-family: 'Roboto', sans-serif;
+            color: var(--color-dark-text);
+            font-size: 16px;
+            padding: 0;
+            resize: vertical;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+        }
+
+        .form-group button {
+            padding: 10px 24px;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .form-group button:hover {
+            background-color: #1669c2;
+        }
+
+
+        /* --- Alunos Detalhe Section --- */
+        .aluno-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .aluno-header .profile-icon {
+            font-size: 72px;
+            color: var(--color-primary);
+            background: var(--color-primary-light);
+            border-radius: 50%;
+            padding: 12px;
+        }
+
+        .aluno-header h2 {
+            font-size: 36px;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .aluno-header p {
+            font-size: 18px;
+            color: var(--color-secondary);
+            margin: 0;
+        }
+
+        .aluno-profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+        }
+
+        .aluno-profile-grid .profile-info-card {
+            height: fit-content;
+        }
+
+        .aluno-profile-grid .chart-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        
+        .report-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .report-list .card {
+            padding: 16px;
+        }
+
+        .report-list .card h4 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .report-list .card p {
+            font-size: 14px;
+            color: var(--color-light-text);
+            margin: 0;
+        }
+
+        .go-back-button {
+            background-color: transparent;
+            border: 1px solid var(--color-border);
+            color: var(--color-secondary);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .go-back-button:hover {
+            background-color: #e8e8e8;
+        }
+
+
+        /* --- Responsive adjustments --- */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 16px 0;
+            }
+            .sidebar-logo {
+                font-size: 0;
+                overflow: hidden;
+                width: 40px; 
+                height: 40px;
+                margin: 0 auto 30px;
+            }
+            .sidebar-nav li a {
+                justify-content: center;
+                padding: 12px 0;
+            }
+            .sidebar-nav li a span:not(.material-icons) {
+                display: none;
+            }
+            .sidebar-nav li a .material-icons {
+                margin-right: 0;
+            }
+            .sidebar-nav li a.active {
+                border-left: none;
+                border-bottom: 4px solid var(--color-primary);
+                padding-left: 0;
+                padding-bottom: 8px;
+            }
+
+            .main-content {
+                padding: 24px 16px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            .header h1 {
+                font-size: 28px;
+            }
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .filters {
+                flex-direction: column;
+            }
+
+            .aluno-profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">Analytica AI</div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#" class="active" data-section="dashboard-section"><span class="material-icons">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="#" data-section="alunos-section"><span class="material-icons">school</span><span>Alunos</span></a></li>
+                <li><a href="#" data-section="relatorios-section"><span class="material-icons">article</span><span>Relatórios</span></a></li>
+                <li><a href="#" data-section="configuracoes-section"><span class="material-icons">settings</span><span>Configurações</span></a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <h1>Dashboard da Escola</h1>
+            <div class="user-info">
+                <span class="material-icons">account_circle</span>
+                <span>Direção Escolar</span>
+            </div>
+        </header>
+        
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="main-section active">
+            <section class="filters">
+                <div>
+                    <label for="filter-turma">Turma:</label>
+                    <select id="filter-turma">
+                        <option value="todos">Todas as Turmas</option>
+                        <option value="8a">8º Ano A</option>
+                        <option value="9b">9º Ano B</option>
+                        <option value="1c">1cº EM C</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filter-disciplina">Disciplina:</label>
+                    <select id="filter-disciplina">
+                        <option value="todas">Todas as Disciplinas</option>
+                        <option value="matematica">Matemática</option>
+                        <option value="portugues">Português</option>
+                        <option value="ciencias">Ciências</option>
+                        <option value="historia">História</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filter-periodo">Período:</label>
+                    <select id="filter-periodo">
+                        <option value="trimestre1">1º Trimestre</option>
+                        <option value="trimestre2">2º Trimestre</option>
+                        <option value="trimestre3">3º Trimestre</option>
+                        <option value="anual">Ano Completo</option>
+                    </select>
+                </div>
+            </section>
+
+            <section class="dashboard-grid">
+                <div class="card">
+                    <h2><span class="material-icons">bar_chart</span>Alunos Ativos</h2>
+                    <div class="metric-value">325</div>
+                    <div class="metric-label">Total de alunos matriculados</div>
+                </div>
+                <div class="card">
+                    <h2><span class="material-icons">trending_up</span>Média Geral (Turma)</h2>
+                    <div class="metric-value">8.2 <span style="font-size:20px; color: var(--color-success);">▲ 0.3</span></div>
+                    <div class="metric-label">Média do 1º Trimestre (todas as turmas)</div>
+                </div>
+                <div class="card">
+                    <h2><span class="material-icons">assignment_late</span>Pendências</h2>
+                    <div class="metric-value">12</div>
+                    <div class="metric-label">Atividades atrasadas ou não entregues</div>
+                </div>
+                <div class="card">
+                    <h2><span class="material-icons">groups</span>Novos Alunos (Mês)</h2>
+                    <div class="metric-value">5</div>
+                    <div class="metric-label">Novas matrículas em Setembro</div>
+                </div>
+            </section>
+
+            <section class="dashboard-grid" style="grid-template-columns: 2fr 1fr;">
+                <div class="card">
+                    <h2><span class="material-icons">insights</span>Desempenho por Disciplina (Turma 8º A)</h2>
+                    <canvas id="bar-chart"></canvas>
+                </div>
+                <div class="card">
+                    <h2><span class="material-icons">pie_chart</span>Distribuição de Notas</h2>
+                    <canvas id="pie-chart"></canvas>
+                </div>
+            </section>
+
+            <section class="data-table" style="margin-top: 32px;">
+                <h2><span class="material-icons">list_alt</span>Notas Recentes dos Alunos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aluno</th>
+                            <th>Turma</th>
+                            <th>Disciplina</th>
+                            <th>Tipo</th>
+                            <th>Nota</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Ana Silva</td><td>8º Ano A</td><td>Matemática</td><td>Prova</td><td>9.2</td><td>2024-09-15</td><td><span class="status-success">Concluído</span></td></tr>
+                        <tr><td>Bruno Costa</td><td>9º Ano B</td><td>Português</td><td>Redação</td><td>7.8</td><td>2024-09-14</td><td><span class="status-success">Concluído</span></td></tr>
+                        <tr><td>Carlos Santos</td><td>1º EM C</td><td>História</td><td>Trabalho</td><td>8.5</td><td>2024-09-12</td><td><span class="status-success">Concluído</span></td></tr>
+                        <tr><td>Diana Pereira</td><td>8º Ano A</td><td>Ciências</td><td>Atividade</td><td>6.5</td><td>2024-09-10</td><td><span class="status-warning">Revisar</span></td></tr>
+                        <tr><td>Eduardo Lima</td><td>9º Ano B</td><td>-</td><td>2024-09-16</td><td><span class="status-error">Pendente</span></td></tr>
+                         <tr><td>Fernanda Gomes</td><td>1º EM C</td><td>Química</td><td>Seminário</td><td>9.5</td><td>2024-09-11</td><td><span class="status-success">Concluído</span></td></tr>
+                        <tr><td>Gabriel Rocha</td><td>8º Ano A</td><td>Português</td><td>Leitura</td><td>8.1</td><td>2024-09-13</td><td><span class="status-success">Concluído</span></td></tr>
+                        <tr><td>Helena Alves</td><td>9º Ano B</td><td>Geografia</td><td>Pesquisa</td><td>7.2</td><td>2024-09-09</td><td><span class="status-warning">Atrasado</span></td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </section>
+
+        <!-- Alunos Section (Lista) -->
+        <section id="alunos-section" class="main-section">
+            <div class="section-title-container">
+                <span class="material-icons">school</span>
+                <h2>Gerenciamento de Alunos</h2>
+            </div>
+            <section class="filters" style="margin-bottom: 24px;">
+                <div>
+                    <label for="filter-nome-aluno">Buscar Aluno:</label>
+                    <input type="text" id="filter-nome-aluno" placeholder="Nome do aluno...">
+                </div>
+                <div>
+                    <label for="filter-turma-aluno">Turma:</label>
+                    <select id="filter-turma-aluno">
+                        <option value="todos">Todas as Turmas</option>
+                        <option value="8a">8º Ano A</option>
+                        <option value="9b">9º Ano B</option>
+                        <option value="1c">1cº EM C</option>
+                    </select>
+                </div>
+            </section>
+            
+            <section class="data-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome do Aluno</th>
+                            <th>Turma</th>
+                            <th>Média Geral</th>
+                            <th>Faltas</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="student-row" data-id="ana-silva"><td><a href="#">Ana Silva</a></td><td>8º Ano A</td><td>8.8</td><td>2</td><td><span class="status-success">Ativo</span></td></tr>
+                        <tr class="student-row"><td>Bruno Costa</td><td>9º Ano B</td><td>7.5</td><td>5</td><td><span class="status-warning">Alerta</span></td></tr>
+                        <tr class="student-row"><td>Carlos Santos</td><td>1º EM C</td><td>8.9</td><td>1</td><td><span class="status-success">Ativo</span></td></tr>
+                        <tr class="student-row"><td>Diana Pereira</td><td>8º Ano A</td><td>6.7</td><td>4</td><td><span class="status-warning">Alerta</span></td></tr>
+                        <tr class="student-row"><td>Eduardo Lima</td><td>9º Ano B</td><td>-</td><td>0</td><td><span class="status-error">Inativo</span></td></tr>
+                        <tr class="student-row"><td>Fernanda Gomes</td><td>1º EM C</td><td>9.1</td><td>0</td><td><span class="status-success">Ativo</span></td></tr>
+                        <tr class="student-row"><td>Gabriel Rocha</td><td>8º Ano A</td><td>8.0</td><td>3</td><td><span class="status-success">Ativo</span></td></tr>
+                        <tr class="student-row"><td>Helena Alves</td><td>9º Ano B</td><td>7.2</td><td>6</td><td><span class="status-error">Crítico</span></td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </section>
+
+        <!-- Aluno Detalhe Section (Novo) -->
+        <section id="aluno-detalhe-section" class="main-section">
+            <button class="go-back-button"><span class="material-icons">arrow_back</span>Voltar para a lista</button>
+            <div class="aluno-header">
+                <span class="material-icons profile-icon">person</span>
+                <div>
+                    <h2>Ana Silva</h2>
+                    <p>8º Ano A</p>
+                </div>
+            </div>
+
+            <section class="filters">
+                <div>
+                    <label for="filter-disciplina-aluno">Disciplina:</label>
+                    <select id="filter-disciplina-aluno">
+                        <option value="matematica">Matemática</option>
+                        <option value="portugues">Português</option>
+                        <option value="ciencias">Ciências</option>
+                        <option value="historia">História</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filter-periodo-aluno">Período:</label>
+                    <select id="filter-periodo-aluno">
+                        <option value="trimestre1">1º Trimestre</option>
+                        <option value="trimestre2">2º Trimestre</option>
+                    </select>
+                </div>
+            </section>
+
+            <div class="aluno-profile-grid">
+                <div class="profile-info-card">
+                    <div class="card" style="margin-bottom: 24px;">
+                        <h2><span class="material-icons">info</span>Informações Gerais</h2>
+                        <div class="metric-label">Matrícula: 20240101</div>
+                        <div class="metric-label">Data de Nascimento: 12/03/2010</div>
+                        <div class="metric-label">Mãe: Maria Silva</div>
+                        <div class="metric-label">Contato: (11) 98765-4321</div>
+                    </div>
+
+                    <div class="card">
+                        <h2><span class="material-icons">check_circle</span>Desempenho Geral</h2>
+                        <div class="metric-value">8.8</div>
+                        <div class="metric-label">Média do 1º Trimestre</div>
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                     <div class="card">
+                        <h2><span class="material-icons">bar_chart</span>Presença na Turma</h2>
+                        <canvas id="attendance-chart"></canvas>
+                    </div>
+                    <div class="card">
+                        <h2><span class="material-icons">trending_up</span>Desempenho em Matemática</h2>
+                        <canvas id="performance-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 32px; font-weight: 500;">Relatórios e Insights por Matéria</h3>
+            <div class="report-list">
+                <div class="card">
+                    <h4>Matemática</h4>
+                    <p>Destaque na disciplina, com excelente compreensão de álgebra e geometria. As notas de prova indicam grande domínio do conteúdo.</p>
+                </div>
+                 <div class="card">
+                    <h4>Português</h4>
+                    <p>Demonstra criatividade e boa organização de ideias. No entanto, o desempenho em gramática e pontuação pode ser melhorado.</p>
+                </div>
+                 <div class="card">
+                    <h4>Ciências</h4>
+                    <p>Participação ativa em aulas práticas e discussões. As notas em atividades de laboratório são consistentemente altas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Relatorios Section -->
+        <section id="relatorios-section" class="main-section">
+            <div class="section-title-container">
+                <span class="material-icons">article</span>
+                <h2>Relatórios Personalizados</h2>
+            </div>
+            <div class="card-group">
+                <div class="report-card">
+                    <h3>Relatório de Desempenho Anual</h3>
+                    <p>Visão geral do desempenho de toda a escola ao longo do ano letivo.</p>
+                    <a href="#" class="btn-secondary">Gerar Relatório</a>
+                </div>
+                <div class="report-card">
+                    <h3>Relatório por Turma</h3>
+                    <p>Análise detalhada do desempenho e frequência de uma turma específica.</p>
+                    <a href="#" class="btn-secondary">Gerar Relatório</a>
+                </div>
+                <div class="report-card">
+                    <h3>Relatório Individual de Aluno</h3>
+                    <p>Relatório completo com o histórico de notas, atividades e progresso de um aluno.</p>
+                    <a href="#" class="btn-secondary">Gerar Relatório</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Configuracoes Section -->
+        <section id="configuracoes-section" class="main-section">
+            <div class="section-title-container">
+                <span class="material-icons">settings</span>
+                <h2>Configurações do Sistema</h2>
+            </div>
+            <div class="settings-card">
+                <h3>Informações da Escola</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="school-name">Nome da Escola</label>
+                        <div class="input-container">
+                             <span class="material-icons">school</span>
+                             <input type="text" id="school-name" value="Escola Modelo" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">Email de Contato</label>
+                         <div class="input-container">
+                             <span class="material-icons">email</span>
+                             <input type="email" id="contact-email" value="contato@escolamodelo.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Endereço</label>
+                         <div class="input-container">
+                             <span class="material-icons">location_on</span>
+                             <textarea id="address" rows="3">Rua das Acácias, 123 - Centro</textarea>
+                        </div>
+                    </div>
+                    <button type="submit">Salvar Alterações</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+            const mainSections = document.querySelectorAll('.main-section');
+            const barChartCanvas = document.getElementById('bar-chart');
+            const pieChartCanvas = document.getElementById('pie-chart');
+
+            // Nova seção de aluno
+            const studentRows = document.querySelectorAll('.student-row');
+            const studentDetailSection = document.getElementById('aluno-detalhe-section');
+            const studentsListSection = document.getElementById('alunos-section');
+            const goBackButton = document.querySelector('.go-back-button');
+
+            function showSection(sectionId) {
+                mainSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(sectionId).classList.add('active');
+            }
+
+            function updateSidebar(activeLink) {
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                activeLink.classList.add('active');
+            }
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = e.currentTarget.getAttribute('data-section');
+                    showSection(sectionId);
+                    updateSidebar(e.currentTarget);
+                    
+                    // Se for a seção de alunos, desenhe os gráficos
+                    if (sectionId === 'dashboard-section') {
+                        drawCharts();
+                    }
+                    if (sectionId === 'aluno-detalhe-section') {
+                         drawStudentCharts();
+                    }
+                });
+            });
+
+            // Lógica para ir para a tela de detalhes do aluno
+            studentRows.forEach(row => {
+                const studentNameLink = row.querySelector('a');
+                if (studentNameLink) {
+                    studentNameLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        // Neste exemplo, apenas a Ana Silva tem dados detalhados.
+                        // Em uma aplicação real, você usaria o ID do aluno para buscar os dados.
+                        if (row.dataset.id === 'ana-silva') {
+                            showSection('aluno-detalhe-section');
+                            drawStudentCharts();
+                        }
+                    });
+                }
+            });
+
+            // Lógica para voltar da tela de detalhes do aluno
+            goBackButton.addEventListener('click', () => {
+                showSection('alunos-section');
+            });
+
+            // Função para desenhar gráficos do dashboard
+            function drawCharts() {
+                // Bar Chart
+                if (barChartCanvas && barChartCanvas.getContext) {
+                    const ctx = barChartCanvas.getContext('2d');
+                    const data = [7.5, 8.8, 8.0, 7.9];
+                    const labels = ['Matemática', 'Português', 'Ciências', 'História'];
+                    const chartWidth = barChartCanvas.offsetWidth;
+                    const chartHeight = barChartCanvas.offsetHeight;
+                    barChartCanvas.width = chartWidth;
+                    barChartCanvas.height = chartHeight;
+
+                    const barWidth = 60;
+                    const maxData = Math.max(...data);
+                    const barSpacing = (chartWidth - (data.length * barWidth)) / (data.length + 1);
+
+                    ctx.clearRect(0, 0, chartWidth, chartHeight);
+                    ctx.textAlign = 'center';
+
+                    labels.forEach((label, index) => {
+                        const value = data[index];
+                        const barHeight = (value / maxData) * (chartHeight - 80);
+                        const x = barSpacing + (index * (barWidth + barSpacing));
+                        const y = chartHeight - barHeight - 40;
+
+                        ctx.fillStyle = '#4285f4'; // Google Blue
+                        ctx.beginPath();
+                        ctx.roundRect(x, y, barWidth, barHeight, [5, 5, 0, 0]);
+                        ctx.fill();
+
+                        ctx.fillStyle = '#202124';
+                        ctx.font = '14px "Google Sans", sans-serif';
+                        ctx.fillText(value, x + barWidth / 2, y - 10);
+
+                        ctx.fillStyle = '#5f6368';
+                        ctx.font = '14px Roboto, sans-serif';
+                        ctx.fillText(label, x + barWidth / 2, chartHeight - 15);
+                    });
+                }
+                
+                // Pie Chart
+                if (pieChartCanvas && pieChartCanvas.getContext) {
+                    const ctx = pieChartCanvas.getContext('2d');
+                    const data = [20, 40, 25, 10, 5];
+                    const colors = ['#4285f4', '#34a853', '#fbbc04', '#ea4335', '#5f6368'];
+                    const total = data.reduce((sum, value) => sum + value, 0);
+                    let startAngle = 0;
+                    const centerX = pieChartCanvas.offsetWidth / 2;
+                    const centerY = pieChartCanvas.offsetHeight / 2;
+                    const radius = Math.min(centerX, centerY) * 0.8;
+
+                    pieChartCanvas.width = pieChartCanvas.offsetWidth;
+                    pieChartCanvas.height = pieChartCanvas.offsetHeight;
+
+                    ctx.clearRect(0, 0, pieChartCanvas.width, pieChartCanvas.height);
+                    ctx.textAlign = 'center';
+
+                    data.forEach((value, index) => {
+                        const sliceAngle = (value / total) * 2 * Math.PI;
+                        const endAngle = startAngle + sliceAngle;
+
+                        ctx.fillStyle = colors[index];
+                        ctx.beginPath();
+                        ctx.moveTo(centerX, centerY);
+                        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                        ctx.closePath();
+                        ctx.fill();
+
+                        const labelAngle = startAngle + sliceAngle / 2;
+                        const labelRadius = radius * 0.7;
+                        const x = centerX + Math.cos(labelAngle) * labelRadius;
+                        const y = centerY + Math.sin(labelAngle) * labelRadius;
+                        
+                        ctx.fillStyle = 'white';
+                        ctx.font = '12px "Google Sans", sans-serif';
+                        ctx.fillText(`${value}%`, x, y);
+
+                        startAngle = endAngle;
+                    });
+                }
+            }
+
+            // Função para desenhar gráficos do perfil do aluno
+            function drawStudentCharts() {
+                const attendanceChartCanvas = document.getElementById('attendance-chart');
+                const performanceChartCanvas = document.getElementById('performance-chart');
+
+                // Attendance Chart (Donut Chart)
+                if (attendanceChartCanvas && attendanceChartCanvas.getContext) {
+                    const ctx = attendanceChartCanvas.getContext('2d');
+                    const presence = 95;
+                    const absence = 5;
+                    const total = presence + absence;
+                    const data = [presence, absence];
+                    const colors = ['#34a853', '#ea4335'];
+                    const labels = ['Presenças', 'Faltas'];
+                    
+                    const centerX = attendanceChartCanvas.offsetWidth / 2;
+                    const centerY = attendanceChartCanvas.offsetHeight / 2;
+                    const radius = Math.min(centerX, centerY) * 0.8;
+                    const innerRadius = radius * 0.6;
+
+                    attendanceChartCanvas.width = attendanceChartCanvas.offsetWidth;
+                    attendanceChartCanvas.height = attendanceChartCanvas.offsetHeight;
+
+                    ctx.clearRect(0, 0, attendanceChartCanvas.width, attendanceChartCanvas.height);
+                    let startAngle = 0;
+
+                    data.forEach((value, index) => {
+                        const sliceAngle = (value / total) * 2 * Math.PI;
+                        const endAngle = startAngle + sliceAngle;
+
+                        ctx.fillStyle = colors[index];
+                        ctx.beginPath();
+                        ctx.moveTo(centerX, centerY);
+                        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                        ctx.arc(centerX, centerY, innerRadius, endAngle, startAngle, true);
+                        ctx.closePath();
+                        ctx.fill();
+
+                        startAngle = endAngle;
+                    });
+
+                    // Texto no centro
+                    ctx.fillStyle = '#202124';
+                    ctx.font = '24px "Google Sans", sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`${presence}%`, centerX, centerY + 5);
+                }
+
+                // Performance Chart (Line Chart)
+                if (performanceChartCanvas && performanceChartCanvas.getContext) {
+                    const ctx = performanceChartCanvas.getContext('2d');
+                    const grades = [6.8, 8.0, 9.2, 8.5, 9.5];
+                    const labels = ['Atividade 1', 'Atividade 2', 'Prova 1', 'Trabalho', 'Prova 2'];
+                    const chartWidth = performanceChartCanvas.offsetWidth;
+                    const chartHeight = performanceChartCanvas.offsetHeight;
+                    performanceChartCanvas.width = chartWidth;
+                    performanceChartCanvas.height = chartHeight;
+
+                    const padding = 40;
+                    const maxGrade = 10;
+                    const minGrade = 0;
+
+                    const getX = (index) => padding + index * (chartWidth - 2 * padding) / (grades.length - 1);
+                    const getY = (value) => chartHeight - padding - (value - minGrade) * (chartHeight - 2 * padding) / (maxGrade - minGrade);
+
+                    ctx.clearRect(0, 0, chartWidth, chartHeight);
+
+                    // Draw axes
+                    ctx.strokeStyle = '#dadce0';
+                    ctx.beginPath();
+                    ctx.moveTo(padding, padding);
+                    ctx.lineTo(padding, chartHeight - padding);
+                    ctx.lineTo(chartWidth - padding, chartHeight - padding);
+                    ctx.stroke();
+
+                    // Draw points and line
+                    ctx.strokeStyle = '#4285f4';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    grades.forEach((grade, index) => {
+                        const x = getX(index);
+                        const y = getY(grade);
+                        if (index === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    });
+                    ctx.stroke();
+
+                    // Draw data points and labels
+                    ctx.fillStyle = '#1a73e8';
+                    grades.forEach((grade, index) => {
+                        const x = getX(index);
+                        const y = getY(grade);
+                        ctx.beginPath();
+                        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                        ctx.fill();
+
+                        ctx.fillStyle = '#202124';
+                        ctx.font = '12px "Google Sans", sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(grade, x, y - 10);
+
+                        ctx.fillStyle = '#5f6368';
+                        ctx.font = '12px Roboto, sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(labels[index], x, chartHeight - padding + 15);
+                    });
+                }
+            }
+
+            // Initial drawing
+            drawCharts();
+
+            // Handle window resize for both sections
+            window.addEventListener('resize', () => {
+                if (document.getElementById('dashboard-section').classList.contains('active')) {
+                    drawCharts();
+                }
+                if (document.getElementById('aluno-detalhe-section').classList.contains('active')) {
+                    drawStudentCharts();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

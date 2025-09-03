@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytica AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #1a73e8; /* Google Blue */
+            --color-secondary: #5f6368; /* Google Grey */
+            --color-background: #ffffff;
+            --color-light-grey: #f8f9fa;
+            --color-dark-text: #202124;
+            --color-light-text: #70757a;
+        }
+
+        body {
+            font-family: 'Google Sans', sans-serif;
+            color: var(--color-dark-text);
+            background-color: var(--color-background);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #dadce0;
+            padding: 16px 0;
+            z-index: 1000;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .navbar-links a {
+            color: var(--color-dark-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-links a:hover {
+            color: var(--color-primary);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 24px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: #ffffff;
+            border: 2px solid var(--color-primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #1565c0;
+            border: 2px solid #1565c0;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-light-grey);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px; /* Space for the fixed navbar */
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 60px;
+            font-weight: 700;
+            color: var(--color-dark-text);
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 24px;
+            color: var(--color-secondary);
+            margin: 24px 0 40px;
+        }
+
+        /* --- Sections General Style --- */
+        .section {
+            padding: 100px 0;
+            background-color: var(--color-background);
+        }
+        
+        .section-title {
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        /* --- Features Section --- */
+        .features {
+            background-color: var(--color-light-grey);
+        }
+
+        .features-cards {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .feature-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+            max-width: 350px;
+            text-align: center;
+        }
+        
+        .feature-card:hover {
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--color-secondary);
+        }
+
+        /* --- Benefits Section --- */
+        .benefits-grid {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+
+        .benefit-column {
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            text-align: left;
+        }
+
+        .benefit-column h3 {
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--color-dark-text);
+            margin-bottom: 16px;
+        }
+
+        .benefit-column p {
+            color: var(--color-secondary);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            padding: 40px 0;
+            text-align: center;
+            color: var(--color-secondary);
+            border-top: 1px solid #dadce0;
+        }
+
+        .footer p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container">
+            <a href="#" class="navbar-logo">Analytica AI</a>
+            <nav class="navbar-links">
+                <a href="#recursos">Recursos</a>
+                <a href="#beneficios">Benefícios</a>
+                <a href="#contato">Contato</a>
+            </nav>
+            <a href="#" class="btn btn-primary">Login</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">A inteligência que transforma dados em resultados</h1>
+            <p class="hero-subtitle">Transformando dados em aprendizado inteligente.</p>
+            <a href="./dashboards.html" class="btn btn-primary">Começar Agora</a>
+        </div>
+    </section>
+
+    <section id="recursos" class="section features">
+        <div class="container">
+            <h2 class="section-title">Nossos Recursos</h2>
+            <div class="features-cards">
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <h3>Dashboard de Performance</h3>
+                    <p>Gráficos e relatórios interativos para visualizar o progresso de forma clara e intuitiva.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📝</span>
+                    <h3>Planos Personalizados</h3>
+                    <p>Planos de estudo sob medida, adaptados ao ritmo e às necessidades de cada usuário.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔔</span>
+                    <h3>Notificações Inteligentes</h3>
+                    <p>Lembretes e alertas em tempo real para manter o foco e garantir a consistência.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="beneficios" class="section">
+        <div class="container">
+            <h2 class="section-title">Benefícios para Todos</h2>
+            <div class="benefits-grid">
+                <div class="benefit-column">
+                    <h3>Famílias</h3>
+                    <p>Tenha transparência total no acompanhamento do progresso dos seus filhos. Receba insights valiosos e relatórios personalizados para apoiar a jornada de aprendizado deles.</p>
+                </div>
+                <div class="benefit-column">
+                    <h3>Escolas</h3>
+                    <p>Otimize a gestão e a avaliação do desempenho de grupos e turmas. Obtenha insights profundos para identificar tendências e tomar decisões pedagógicas mais eficazes.</p>
+                </div>
+                <div class="benefit-column">
+                    <h3>Alunos</h3>
+                    <p>Aproveite planos de estudo personalizados e receba feedback contínuo. Entenda seus pontos fortes e fracos, e acelere seu desenvolvimento de forma inteligente.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contato" class="footer">
+        <div class="container">
+            <p>Contato: contato@analytica-ai.com</p>
+            <p>&copy; 2025 Analytica AI. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
